@@ -4,4 +4,6 @@
     <string name="hint">Enter Search Query</string>
     <string name="search">Search</string>
     <string name="title_activity_article">ArticleActivity</string>
+    <string name="Snippet">TextView</string>
+    <string name="searches">Search</string>
 </resources>
