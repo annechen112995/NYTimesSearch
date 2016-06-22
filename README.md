@@ -9,13 +9,13 @@ NYTimesSearch is an android app that allows a user to search for articles on web
 The following **required** functionality is completed:
 
 * [x] User can **search for news article** by specifying a query and launching a search. Search displays a grid of image results from the New York Times Search API.
-* [x] User can **scroll down to see more articles**. The maximum number of articles is limited by the API search.
+* [ ] User can **scroll down to see more articles**. The maximum number of articles is limited by the API search.
 * [x] User can tap on any image in results to see the full text of article **full-screen**
 
 The following **optional** features are implemented:
 
-* [ ] Used the **ActionBar SearchView** or custom layout as the query box
-* [ ] User can **share an article link** to their friends or email it to themselves
+* [x] Used the **ActionBar SearchView** or custom layout as the query box
+* [x] User can **share an article link** to their friends or email it to themselves
 * [ ] Improved the user interface and experiment with image assets and/or styling and coloring
 * [ ] User can click on "settings" which allows selection of **advanced search options** to filter results
   * [ ] User can configure advanced search filters such as:
@@ -27,7 +27,7 @@ The following **optional** features are implemented:
 * [ ] Implements robust error handling, [check if internet is available](http://guides.codepath.com/android/Sending-and-Managing-Network-Requests#checking-for-network-connectivity), handle error cases, network failures
 * [ ] Apply the popular [Butterknife annotation library](http://guides.codepath.com/android/Reducing-View-Boilerplate-with-Butterknife) to reduce view boilerplate.
 * [ ] Replace `GridView` with the [RecyclerView](http://guides.codepath.com/android/Using-the-RecyclerView) and the `StaggeredGridLayoutManager` to improve the grid of image results displayed
-* [ ] Replace Picasso with [Glide](http://inthecheesefactory.com/blog/get-to-know-glide-recommended-by-google/en) for more efficient image rendering.
+* [x] Replace Picasso with [Glide](http://inthecheesefactory.com/blog/get-to-know-glide-recommended-by-google/en) for more efficient image rendering.
 
 ## Video Walkthrough
 
