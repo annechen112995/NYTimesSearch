@@ -10,6 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".activities.SearchActivity"
             android:label="@string/app_name"
@@ -20,12 +21,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.ArticleActivity"
             android:label="@string/title_activity_article"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
+
     </application>
 
     <activity
@@ -33,5 +36,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme.NoActionBar">
     </activity>
+
+    <meta-data
+        android:name="com.inthecheesefactory.lab.glidepicasso.GlideConfiguration"
+        android:value="GlideModule"/>
 
 </manifest>
