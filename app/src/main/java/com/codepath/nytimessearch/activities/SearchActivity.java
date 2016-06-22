@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -30,15 +31,13 @@ import cz.msebera.android.httpclient.Header;
 
 public class SearchActivity extends AppCompatActivity {
 
-    //EditText etQuery;
     GridView gvResults;
-    //Button btnSearch;
-
-    //ShareActionProvider miShareAction;
 
     ArrayList<Article> articles;
     ArticleArrayAdapter adapter;
     //ArticleClient client;
+
+    ShareActionProvider miShareAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,25 +54,9 @@ public class SearchActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        /** MenuItem shareItem = menu.findItem(R.id.menu_item_share);
+        MenuItem item = menu.findItem(R.id.menu_item_share);
 
-        miShareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-
-        ShareActionProvider miShare = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-
-        // get reference to WebView
-        WebView wvArticle = (WebView) findViewById(R.id.wvArticle);
-        // pass in the URL currently being used by the WebView
-        assert wvArticle != null;
-        shareIntent.putExtra(Intent.EXTRA_TEXT, wvArticle.getUrl());
-
-        miShare.setShareIntent(shareIntent);
-
-        // webShare(shareIntent);
-
-        // startActivity(shareIntent); */
+        miShareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
 
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 
@@ -96,6 +79,13 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        int id = item.getItemId();
+
+        if (id == R.id.menu_item_share) {
+            fetchShare(item);
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -111,11 +101,9 @@ public class SearchActivity extends AppCompatActivity {
             return true;
         }
 
-        /** switch (item.getItemId()) {
-            case R.id.menu_item_share:
-                //webShare(miShareAction.setShareIntent(shareIntent));
-        } */
-
+        if (id == R.id.menu_item_share) {
+            fetchShare(item);
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -172,7 +160,17 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    /** public void webShare(Intent shareIntent) {
-        miShareAction.setShareIntent(shareIntent);
-    } */
+    public void fetchShare(MenuItem item) {
+
+        // Return true to display menu
+        // return true;
+        ShareActionProvider miShare = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+
+        // get reference to WebView
+        // WebView wvArticle = (WebView) findViewById(R.id.wvArticle);
+
+        miShare.setShareIntent(shareIntent);
+    }
 }
