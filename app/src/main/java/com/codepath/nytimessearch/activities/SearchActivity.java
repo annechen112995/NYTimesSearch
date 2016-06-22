@@ -34,6 +34,8 @@ public class SearchActivity extends AppCompatActivity {
     GridView gvResults;
     //Button btnSearch;
 
+    //ShareActionProvider miShareAction;
+
     ArrayList<Article> articles;
     ArticleArrayAdapter adapter;
     //ArticleClient client;
@@ -45,7 +47,6 @@ public class SearchActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setListener();
-        //setupViews();
     }
 
     @Override
@@ -54,6 +55,26 @@ public class SearchActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
         MenuItem searchItem = menu.findItem(R.id.action_search);
+        /** MenuItem shareItem = menu.findItem(R.id.menu_item_share);
+
+        miShareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+
+        ShareActionProvider miShare = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+
+        // get reference to WebView
+        WebView wvArticle = (WebView) findViewById(R.id.wvArticle);
+        // pass in the URL currently being used by the WebView
+        assert wvArticle != null;
+        shareIntent.putExtra(Intent.EXTRA_TEXT, wvArticle.getUrl());
+
+        miShare.setShareIntent(shareIntent);
+
+        // webShare(shareIntent);
+
+        // startActivity(shareIntent); */
+
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
 
         searchItem.expandActionView();
@@ -75,7 +96,7 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
-            return super.onCreateOptionsMenu(menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -89,6 +110,11 @@ public class SearchActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+
+        /** switch (item.getItemId()) {
+            case R.id.menu_item_share:
+                //webShare(miShareAction.setShareIntent(shareIntent));
+        } */
 
         return super.onOptionsItemSelected(item);
     }
@@ -145,4 +171,8 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
     }
+
+    /** public void webShare(Intent shareIntent) {
+        miShareAction.setShareIntent(shareIntent);
+    } */
 }
