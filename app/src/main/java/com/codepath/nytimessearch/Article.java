@@ -58,7 +58,6 @@ public class Article implements Serializable {
                 e.printStackTrace();
             }
         }
-
         return results;
     }
 }

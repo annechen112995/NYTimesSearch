@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.codepath.nytimessearch.Article;
 import com.codepath.nytimessearch.ArticleArrayAdapter;
+import com.codepath.nytimessearch.EndlessRecyclerViewScrollListener;
 import com.codepath.nytimessearch.ItemClickSupport;
 import com.codepath.nytimessearch.R;
 import com.loopj.android.http.AsyncHttpClient;
@@ -35,7 +36,6 @@ public class SearchActivity extends AppCompatActivity {
     RecyclerView rvResults;
 
     ArrayList<Article> articles;
-    String query;
     ArticleArrayAdapter adapter;
 
     ShareActionProvider miShareAction;
@@ -48,6 +48,13 @@ public class SearchActivity extends AppCompatActivity {
         // Lookup the recyclerview in activity layout
         RecyclerView rvResults = (RecyclerView) findViewById(R.id.rvResults);
 
+        /** if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            mRecycler.setLayoutManager(new GridLayoutManager(mContext, 2));
+        }
+        else{
+            mRecycler.setLayoutManager(new GridLayoutManager(mContext, 4));
+        } */
+
         // Create adapter passing in the sample user data
         ArticleArrayAdapter adapter = new ArticleArrayAdapter(this, articles);
 
@@ -56,11 +63,29 @@ public class SearchActivity extends AppCompatActivity {
         rvResults.setAdapter(adapter);
 
         // Set layout manager to position the items
-        rvResults.setLayoutManager(new LinearLayoutManager(this));
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvResults.setLayoutManager(linearLayoutManager);
+
+        // Add the scroll listener
+        rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                customLoadMoreDataFromApi(page);
+            }
+        });
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setListener();
+    }
+
+    // Append more data into the adapter
+    // This method probably sends out a network request and appends new data items to your adapter.
+    public void customLoadMoreDataFromApi(int page) {
+        // Send an API request to retrieve appropriate data using the offset value as a parameter.
+        //  --> Deserialize API response and then construct new objects to append to the adapter
+        //  --> Notify the adapter of the changes
     }
 
     @Override
