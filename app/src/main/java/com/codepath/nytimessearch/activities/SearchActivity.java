@@ -106,6 +106,8 @@ public class SearchActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                articles.clear();
+
                 //perform query here
                 fetchResults(query);
 
