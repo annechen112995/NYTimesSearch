@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.codepath.nytimessearch.Article;
 import com.codepath.nytimessearch.R;
@@ -17,9 +18,13 @@ public class ArticleActivity extends SearchActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Toast.makeText(this, "Loading Articles...", Toast.LENGTH_SHORT).show();
+
         Article article = (Article) getIntent().getSerializableExtra("article");
 
         WebView webView = (WebView) findViewById(R.id.wvArticle);
+
+        Toast.makeText(this, "Loaded", Toast.LENGTH_SHORT).show();
 
         assert webView != null;
         webView.setWebViewClient(new WebViewClient() {
@@ -31,6 +36,8 @@ public class ArticleActivity extends SearchActivity {
         });
 
         webView.loadUrl(article.getWebUrl());
+
+        Toast.makeText(this, "Finish ", Toast.LENGTH_SHORT).show();
     }
 
 }

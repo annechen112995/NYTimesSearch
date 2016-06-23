@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.ShareActionProvider;
 import android.support.v7.widget.Toolbar;
@@ -11,11 +13,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import com.codepath.nytimessearch.Article;
 import com.codepath.nytimessearch.ArticleArrayAdapter;
+import com.codepath.nytimessearch.ItemClickSupport;
 import com.codepath.nytimessearch.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -31,11 +32,11 @@ import cz.msebera.android.httpclient.Header;
 
 public class SearchActivity extends AppCompatActivity {
 
-    GridView gvResults;
+    RecyclerView rvResults;
 
     ArrayList<Article> articles;
+    String query;
     ArticleArrayAdapter adapter;
-    //ArticleClient client;
 
     ShareActionProvider miShareAction;
 
@@ -43,6 +44,20 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        // Lookup the recyclerview in activity layout
+        RecyclerView rvResults = (RecyclerView) findViewById(R.id.rvResults);
+
+        // Create adapter passing in the sample user data
+        ArticleArrayAdapter adapter = new ArticleArrayAdapter(this, articles);
+
+        // Attach the adapter to the recyclerview to populate items
+        assert rvResults != null;
+        rvResults.setAdapter(adapter);
+
+        // Set layout manager to position the items
+        rvResults.setLayoutManager(new LinearLayoutManager(this));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setListener();
@@ -67,7 +82,7 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //perform query here
-                fetchResults();
+                fetchResults(query);
 
                 searchView.clearFocus();
 
@@ -107,16 +122,15 @@ public class SearchActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void fetchResults() {
+    public void fetchResults(String query) {
 
-        //Toast.makeText(this, "Searching for " + query, Toast.LENGTH_SHORT).show();
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "http://api.nytimes.com/svc/search/v2/articlesearch.json";
 
         RequestParams params = new RequestParams();
         params.put("api-key", "4706784a04264dae9fe15aabaf3cd2ae");
         params.put("page", 0);
-        //params.put("q", query);
+        params.put("q", query);
 
         client.get(url, params, new JsonHttpResponseHandler() {
             @Override
@@ -126,7 +140,8 @@ public class SearchActivity extends AppCompatActivity {
 
                 try {
                     articleJSONResults = response.getJSONObject("response").getJSONArray("docs");
-                    adapter.addAll(Article.fromJsonArray(articleJSONResults));
+                    articles.addAll(Article.fromJsonArray(articleJSONResults));
+                    adapter.notifyDataSetChanged();
                     Log.d("DEBUG", articles.toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -136,15 +151,16 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void setListener() {
-        gvResults = (GridView) findViewById(R.id.gvResults);
+        rvResults = (RecyclerView) findViewById(R.id.rvResults);
         articles = new ArrayList<>();
         adapter = new ArticleArrayAdapter(this, articles);
-        gvResults.setAdapter(adapter);
+        rvResults.setAdapter(adapter);
 
         //Allows action when grid is clicked
-        gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        ItemClickSupport.addTo(rvResults).setOnItemClickListener(
+            new ItemClickSupport.OnItemClickListener() {
+
+                public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 //Creates an intent to display article
                 Intent i = new Intent(getApplicationContext(), ArticleActivity.class);
 
