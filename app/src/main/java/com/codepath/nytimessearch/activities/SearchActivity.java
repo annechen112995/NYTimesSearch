@@ -1,13 +1,14 @@
 package com.codepath.nytimessearch.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.ShareActionProvider;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -48,13 +49,6 @@ public class SearchActivity extends AppCompatActivity {
         // Lookup the recyclerview in activity layout
         RecyclerView rvResults = (RecyclerView) findViewById(R.id.rvResults);
 
-        /** if(getActivity().getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-            mRecycler.setLayoutManager(new GridLayoutManager(mContext, 2));
-        }
-        else{
-            mRecycler.setLayoutManager(new GridLayoutManager(mContext, 4));
-        } */
-
         // Create adapter passing in the sample user data
         ArticleArrayAdapter adapter = new ArticleArrayAdapter(this, articles);
 
@@ -63,11 +57,18 @@ public class SearchActivity extends AppCompatActivity {
         rvResults.setAdapter(adapter);
 
         // Set layout manager to position the items
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rvResults.setLayoutManager(linearLayoutManager);
+        final StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        rvResults.setLayoutManager(staggeredGridLayoutManager);
+
+        if(rvResults.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            rvResults.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        }
+        else{
+            rvResults.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.HORIZONTAL));
+        }
 
         // Add the scroll listener
-        rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+        rvResults.addOnScrollListener(new EndlessRecyclerViewScrollListener(staggeredGridLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 // Triggered only when new data needs to be appended to the list
